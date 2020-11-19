@@ -1,0 +1,13 @@
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.styling{
+    display: flex;
+    justify-content: center;
+    color: aqua;
+}
+.todo-box{
+    display: flex;
+}

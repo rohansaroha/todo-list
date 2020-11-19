@@ -1,51 +1,67 @@
-import React from "react";
-import { textUpdated, callNoApi } from '../Services/Services.js';
-import axios from 'axios';
+import React from 'react';
+import { Checkbox } from 'semantic-ui-react';
+import '../css/form.css'
 
-class Form extends React.Component{
+
+class Forms extends React.Component{
     state = {
-        name : "",
-        valueNo : []
+        text : '',
+        arr :[]
     }
-    handleChange=(e)=>{
-        this.setState({
-            name : e.target.value
+    handlechange = (e)=>{
+        const arr = this.state.arr.filter(()=>{
+            
         })
-        console.log(this.state.name);
+        this.setState({
+            text : e.target.value
+        })
     }
-    submitChange = (e)=>{
+
+    handleText =(e)=> {
         e.preventDefault();
-        const text = this.state.name;
-        callNoApi(text).then((res)=>{
-            const arr = [...this.state.valueNo,{ no:this.state.name,data : res.data }]
-            this.setState({
-                valueNo : arr
-            })
-            console.log(this.state.valueNo)
-            console.log(res.data)
+        const text = this.state.text;
+        this.setState({
+            arr : [...this.state.arr,text]
         })
     }
-    deleteHandler = (index) => {
-        const arr = this.state.valueNo.slice();
-        arr.splice(index, 1);
+
+    printText = ()=>{
+        return(this.state.arr.map((res,ind)=>{
+            return (
+                <div className='todo-box' key = {ind}>
+                    <Checkbox/>
+                    <div>{res}</div>
+                </div>
+            )
+        }))
+    }
+    deleteAllHandler = (ind)=>{
         this.setState({
-            valueNo: arr
-        });
+            arr : [],
+            text : ''
+        })
     }
-    deleteHandlerFilter = (number) => {
-        // Delete the obj with the given number using filter.
-    }
+
     render() {
         return(
-            <form onSubmit={this.submitChange}>
-                <input type='text' onChange={this.handleChange}/>
-                <button type='submit'>Submit</button>
-                <div>{this.state.valueNo.map((res, index)=>{return(<div key={res.no}>
-                    {res.no} => {res.data}
-                    <button onClick={() => this.deleteHandlerFilter(index)}>Delete</button>
-                </div>)})}</div>
-            </form>
+            <div className='main'>
+                    <div className="card">
+                        <div className="todo">
+                            <h1 className='styling'>TO DO</h1>
+                        </div>
+                        <div className="todo-list">
+                            <form onSubmit={this.handleText}>
+                                <input type='text' onChange={this.handlechange}/>
+                                <button type='submit'>Submit</button>
+                                <div>{this.printText()}</div>
+                                <button onClick={()=>{this.deleteAllHandler()}}>Delete All</button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+
         )
     }
 }
-export default Form;
+
+export default Forms;
